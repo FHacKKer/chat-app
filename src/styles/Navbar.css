@@ -1,0 +1,40 @@
+/* Navbar.css */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #333;
+    color: #fff;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+ul {
+    list-style-type: none;
+    display: flex;
+    gap: 20px;
+}
+
+ul li a.active{
+    color: lawngreen;
+    background-color: #444;
+
+}
+ul li a {
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    font-size: 1.7rem;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+ul li a:hover {
+    background-color: #444;
+    color: lawngreen;
+}
