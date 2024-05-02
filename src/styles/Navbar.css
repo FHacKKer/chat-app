@@ -43,8 +43,12 @@ ul li a:hover {
 .open-menu,.close-menu{
     display: none;
     font-size: 3rem;
+    cursor: pointer;
+    transition: .3s ease-in-out;
 }
-
+.open-menu:hover,.close-menu:hover{
+    box-shadow: 0px 3px 12px 0px #0eb3ae;
+}
 @media (max-width: 768px) {
     .open-menu,.close-menu{
         display: block;
