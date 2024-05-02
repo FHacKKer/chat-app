@@ -5,6 +5,7 @@ import {createBrowserRouter,RouterProvider} from "react-router-dom";
 import './index.css'
 import ChatPage from "./Components/ChatPage.jsx";
 import Logout from "./Components/LogoutPage.jsx";
+import ChatStates from "./Context/ChatStates.jsx";
 
 
 const routes = createBrowserRouter([
@@ -24,6 +25,10 @@ const routes = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={routes} />
+
+      <ChatStates>
+        <RouterProvider router={routes} />
+      </ChatStates>
+
   </React.StrictMode>,
 )

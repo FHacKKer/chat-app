@@ -1,0 +1,47 @@
+/* App.css */
+.main {
+    height: calc(100svh - 64px);
+    border-top: 2px solid white;
+    background-color: steelblue;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main h1 {
+    font-size: 4rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.main p {
+    font-size: 2rem;
+    text-align: center;
+    max-width: 600px;
+    margin-bottom: 20px;
+}
+
+.main button {
+    background-color: #0066ff; /* Bright blue color */
+    color: white;
+    padding: 10px 20px;
+    font-size: 1.8rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.main button:hover {
+    background-color: #005bb5; /* Darker shade on hover */
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+    .main {
+        padding: 10px;
+        text-align: center;
+    }
+}

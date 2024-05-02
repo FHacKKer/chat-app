@@ -8,11 +8,12 @@
 }
 
 html{
-    font-size: 10px;
+        font-size: 10px;
 }
 
 .main{
     height: calc(100svh - 64px);
     border-top: 2px solid white;
-    background-color: #444;
+    background-color: steelblue;
+
 }

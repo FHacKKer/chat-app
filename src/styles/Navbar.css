@@ -18,6 +18,7 @@ ul {
     list-style-type: none;
     display: flex;
     gap: 20px;
+    transition: .3s ease-in-out;
 }
 
 ul li a.active{
@@ -30,7 +31,7 @@ ul li a {
     color: white;
     text-decoration: none;
     padding: 10px 15px;
-    font-size: 1.7rem;
+    font-size: 1.8rem;
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -38,3 +39,47 @@ ul li a:hover {
     background-color: #444;
     color: lawngreen;
 }
+
+.open-menu,.close-menu{
+    display: none;
+    font-size: 3rem;
+}
+
+@media (max-width: 768px) {
+    .open-menu,.close-menu{
+        display: block;
+    }
+    ul{
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        position: absolute;
+        right: 0;
+        flex-direction: column;
+        justify-content: space-evenly;
+        padding-left: 30px;
+        padding-right: 20px;
+        width: 50%;
+        align-items: center;
+        top: 66px;
+        height: calc(100vh - 64px);
+        background: cornflowerblue;
+    }
+    ul.active-menu{
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
