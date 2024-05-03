@@ -1,6 +1,6 @@
 /* App.css */
 .main {
-    height: calc(100svh - 64px);
+    height: calc(100svh - 66px);
     border-top: 2px solid white;
     background-color: #1c1c1c;
     color: white;
@@ -24,7 +24,7 @@
     line-height: 1.8;
 }
 
-.main button {
+.main .chatBtn {
     background:transparent; /* Bright blue color */
     border: 2px solid white;
     color: white;
@@ -38,7 +38,7 @@
     transition: background-color 0.3s;
 }
 
-.main button:hover {
+.main .chatBtn:hover {
     background-color: #005bb5; /* Darker shade on hover */
 }
 

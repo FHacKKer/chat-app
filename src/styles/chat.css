@@ -1,9 +1,9 @@
 /* General styling for the chat page with a dark theme */
 
 .chatPage {
-    height: calc(100vh - 66px) !important;
+    height: calc(100svh - 66px) !important;
     width: 100%;
-    border-top: 2px solid #333333; /* Dark border */
+    border-top: 2px solid #ffffff; /* Dark border */
     display: flex;
     flex-direction: column;
     background-color: #1c1c1c; /* Dark background for the entire page */

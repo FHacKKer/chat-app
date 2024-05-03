@@ -1,10 +1,10 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import {createBrowserRouter,RouterProvider} from "react-router-dom";
 import './index.css'
 import AnimatedCursor  from "animated-cursor";
-
+import 'react-toastify/dist/ReactToastify.css';
 
 const ac = AnimatedCursor({
     color: '#0ff',
@@ -12,14 +12,15 @@ const ac = AnimatedCursor({
     outerAlpha: .1,
     outerBorderSize : 3,
     zIndex:1000,
+    clickables:[".creditDiv"],
     size: {
         inner: 10,
 
         outer: 38
     },
     hoverScale: {
-        inner: 0.5,
-        outer: 1.4
+        inner: 1.4,
+        outer: 2.4
     },
     clickScale: {
         inner: 2.4,
@@ -29,13 +30,12 @@ const ac = AnimatedCursor({
 ac.init()
 
 
-
-
 import Logout from "./Components/LogoutPage.jsx";
 import ChatStates from "./Context/ChatStates.jsx";
 import ChatPage from "./Components/ChatPage.jsx";
 import LoginPage from "./Components/LoginPage.jsx";
-
+import SignupPage from "./Components/SignupPage.jsx";
+import NotFound from "./Components/NotFound.jsx";
 
 
 const routes = createBrowserRouter([
@@ -54,6 +54,14 @@ const routes = createBrowserRouter([
     {
         path:"/login",
         element:<LoginPage/>
+    },
+    {
+        path:"/signup",
+        element:<SignupPage/>
+    },
+    {
+        path:"*",
+        element:<NotFound/>
     }
 ]);
 

@@ -30,9 +30,37 @@ html{
 }
 
 .main{
-    height: calc(100vh - 66px) !important;
+    height: calc(100svh - 66px) !important;
     border-top: 2px solid white;
 }
 #cursor-outer,#cursor-inner{
     z-index: 110111;
 }
+
+.Toastify__toast-container {
+    font-size: 1.7rem;
+}
+
+.creditDiv{
+    position: absolute;
+    bottom: 10%;
+    right: 20px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    /*z-index: 111;*/
+    box-shadow: 0 0 10px rgba(0, 109, 214, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+    .creditDiv .bx.bxl-github{
+        font-size: 4rem;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }

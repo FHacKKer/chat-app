@@ -67,7 +67,8 @@ ul li a:hover {
         width: 50%;
         align-items: center;
         top: 66px;
-        height: calc(100vh - 64px);
+        z-index: 11;
+        height: calc(100svh - 66px);
         background: cornflowerblue;
     }
     ul.active-menu{

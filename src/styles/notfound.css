@@ -1,0 +1,39 @@
+.main h1{
+    font-size: 4rem;
+}
+
+.main .backBtn{
+    font-size: 2.2rem;
+    margin: 2rem 0;
+    width: 24rem;
+    color: white;
+    text-decoration: none;
+    border-radius: 2rem;
+    border: 2px solid white;
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    outline: none;
+    z-index: 1;
+    transition: .4s all ease-in-out;
+}
+
+.main .backBtn::before{
+    content: "";
+    z-index: -1;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: #ffffff;
+    right: 0;
+    top: 0;
+    transform: scaleX(0);
+    transition: .4s all ease-in-out;
+}
+.main .backBtn:hover{
+    color: #1c1c1c;
+}
+.main .backBtn:hover::before{
+    transform: scaleX(1);
+}

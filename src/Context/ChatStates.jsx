@@ -1,8 +1,24 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import ChatContext from './ChatContext';
+import {toast} from "react-toastify";
 
 // Context provider component
 const ChatStates = (props) => {
+
+
+    const showToast = (type,message) => {
+        toast(message, {
+            type:type,
+            position: "bottom-right",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
 
     // State initialization
     const [openNavBar, setOpenNavBar] = useState(false);
@@ -12,7 +28,8 @@ const ChatStates = (props) => {
         openNavBar,
         setOpenNavBar,
         isLoggedIn,
-        setIsLoggedIn
+        setIsLoggedIn,
+        showToast
     }
 
     return (

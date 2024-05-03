@@ -32,7 +32,7 @@ function Navbar() {
                         {isLoggedIn ? (
                             <Link className={`${pathname === "/logout" ? "active" : ""}`} to="/logout">Logout</Link>
                         ) : (
-                            <Link className={`${pathname === "/login" ? "active" : ""}`} to="/login">Login</Link>
+                            <Link className={`${pathname === "/login" || pathname === "/signup" ? "active" : ""}`} to="/login">Login</Link>
                         )}
                     </li>
                 </ul>
