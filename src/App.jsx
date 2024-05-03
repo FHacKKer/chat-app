@@ -1,4 +1,4 @@
-import {Navigate, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 
 import("./styles/App.css");
@@ -7,7 +7,6 @@ import Navbar from "./Components/Navbar.jsx";
 function App() {
 
     const navigate = useNavigate();
-
 
     const redirect = () => {
         navigate("/chat");

@@ -1,10 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Sans:ital,wdth@0,87.5;1,87.5&display=swap');
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     text-decoration: none;
     list-style: none;
+    font-family: "Ubuntu Sans", sans-serif;
+    font-optical-sizing: auto;
     font-weight: 400;
+    font-style: normal;
+    font-variation-settings: "wdth" 87.5;
+}
+
+*::-webkit-scrollbar{
+    width: 5px;
+    background: #000;
+}
+*::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    /*background: green;*/
+}
+*::-webkit-scrollbar-track{
+    background: steelblue;
+    border-radius: 10px;
 }
 
 html{
@@ -12,8 +30,9 @@ html{
 }
 
 .main{
-    height: calc(100svh - 64px);
+    height: calc(100vh - 66px) !important;
     border-top: 2px solid white;
-    background-color: steelblue;
-
+}
+#cursor-outer,#cursor-inner{
+    z-index: 110111;
 }

@@ -2,7 +2,7 @@
 .main {
     height: calc(100svh - 64px);
     border-top: 2px solid white;
-    background-color: steelblue;
+    background-color: #1c1c1c;
     color: white;
     display: flex;
     flex-direction: column;

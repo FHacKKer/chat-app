@@ -6,7 +6,7 @@ import("../styles/Navbar.css");
 function Navbar() {
     const {pathname} = useLocation();
 
-    const {openNavBar,setOpenNavBar} = useContext(ChatContext);
+    const {openNavBar,setOpenNavBar,isLoggedIn} = useContext(ChatContext);
 
     return (
         <>
@@ -29,7 +29,11 @@ function Navbar() {
                         <Link className={`${pathname === "/chat" ? "active" : ""}`} to="/chat">Chat</Link>
                     </li>
                     <li>
-                        <Link className={`${pathname === "/logout" ? "active" : ""}`} to="/logout">Logout</Link>
+                        {isLoggedIn ? (
+                            <Link className={`${pathname === "/logout" ? "active" : ""}`} to="/logout">Logout</Link>
+                        ) : (
+                            <Link className={`${pathname === "/login" ? "active" : ""}`} to="/login">Login</Link>
+                        )}
                     </li>
                 </ul>
             </header>
