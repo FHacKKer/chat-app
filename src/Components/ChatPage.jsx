@@ -8,22 +8,14 @@ import NoMessages from "./NoMessages.jsx";
 import Error from "./Error.jsx";
 import ChatContext from "../Context/ChatContext.js";
 import {ToastContainer} from "react-toastify";
+import {SocketContext} from "../Context/SocketContext.jsx";
 
-const fetchData = async () => {
-    const response = await fetch('https://jsonplaceholder.typicode.com/comments/2'); // Correct endpoint
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-    return await response.json();
-};
 
 const ChatPage = () => {
-    const [messages, setMessages] = useState([])
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [message, setMessage] = useState("")
 
     const {isLoggedIn,showToast} = useContext(ChatContext);
+    const {socket,loading,messages,error,addMyMessage} = useContext(SocketContext);
 
     const inputField = useRef(null);
     useEffect(() => {
@@ -35,32 +27,6 @@ const ChatPage = () => {
             }
         }
     }, [message, inputField,isLoggedIn]);
-
-
-    const hasFetched = useRef(null);
-
-    useEffect(() => {
-        if (hasFetched.current) {
-            return; // Exit if we've already fetched data
-        }
-
-        const fetchMessages = async () => {
-            try {
-                const data = await fetchData();
-                console.log("Fetched Messages:", data); // Debug to check the data structure
-                setMessages(Array.isArray(data) ? data : [data]); // Ensure it's an array
-                hasFetched.current = true; // Mark that data has been fetched
-            } catch (error) {
-                console.error("Failed to fetch data:", error);
-                setError("An error occurred while fetching messages. Please try again later.");
-            } finally {
-                setLoading(false); // No need for delay
-            }
-        };
-
-        fetchMessages(); // Fetch the data
-    }, []); // Empty array ensures this effect is meant to run only once
-
 
     const addedCrDiv = useRef(false); // Use useRef to track if div was added
 
@@ -91,8 +57,12 @@ const ChatPage = () => {
 
         body[0].appendChild(creditDiv); // Add the div to the body
         addedCrDiv.current = true; // Mark that div has been added
-    }, []); // Empty dependency array to ensure useEffect runs once
+    }, []);
 
+    useEffect(() => {
+        const messagesDiv = document.querySelector(".messagesArea");
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }, [messages]);
 
     const handleMessageSend = () => {
         if(!isLoggedIn){
@@ -107,8 +77,18 @@ const ChatPage = () => {
             showToast("info","Please Write Message First!")
             return;
         }
+        let mymsg = {
+            name:"Faisal Shahzad",
+            message:msg,
+            timestamp:Date.now()
+        }
+        if(socket){
+            socket.emit("newMessage",msg);
 
-        showToast("info",msg)
+            addMyMessage(mymsg)
+        }else{
+            console.error(`Failed To Connect With Backend. Please Try Again Latter.!`)
+        }
     }
 
 
@@ -124,8 +104,8 @@ const ChatPage = () => {
                 ) : loading ? (
                     <Loading />
                     ) : messages.length > 0 ? (
-                    messages.map((value,i) => (
-                    <Message key={value.id} name={value.name} message={value.body} side={i%2 === 0 ? "incoming" : "outgoing"} />
+                    messages.map((message,i) => (
+                    <Message key={i} name={message.sender} message={message.message} side={i%2 === 0 ? "incoming" : "outgoing"} time={message.timestamp} />
             ))
             ) : (
             <NoMessages />

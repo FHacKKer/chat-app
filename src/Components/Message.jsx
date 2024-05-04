@@ -6,7 +6,7 @@ function Message(props) {
             <span>{props.name}</span>
             <br/>
             <p>{props.message}</p>
-            <small>{Date.now()}</small>
+            <small>{props.time}</small>
         </div>
     );
 }
