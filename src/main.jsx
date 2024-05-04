@@ -1,10 +1,17 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import {createBrowserRouter,RouterProvider} from "react-router-dom";
 import './index.css'
 import AnimatedCursor  from "animated-cursor";
 import 'react-toastify/dist/ReactToastify.css';
+import {SocketProvider} from "./Context/SocketContext.jsx";
+import Logout from "./Components/LogoutPage.jsx";
+import ChatStates from "./Context/ChatStates.jsx";
+import ChatPage from "./Components/ChatPage.jsx";
+import LoginPage from "./Components/LoginPage.jsx";
+import SignupPage from "./Components/SignupPage.jsx";
+import NotFound from "./Components/NotFound.jsx";
 
 const ac = AnimatedCursor({
     color: '#0ff',
@@ -28,14 +35,6 @@ const ac = AnimatedCursor({
     }
 });
 ac.init()
-
-
-import Logout from "./Components/LogoutPage.jsx";
-import ChatStates from "./Context/ChatStates.jsx";
-import ChatPage from "./Components/ChatPage.jsx";
-import LoginPage from "./Components/LoginPage.jsx";
-import SignupPage from "./Components/SignupPage.jsx";
-import NotFound from "./Components/NotFound.jsx";
 
 
 const routes = createBrowserRouter([
@@ -70,7 +69,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
 
       <ChatStates>
-        <RouterProvider router={routes} />
+          <SocketProvider>
+            <RouterProvider router={routes} />
+          </SocketProvider>
       </ChatStates>
 
   </React.StrictMode>,

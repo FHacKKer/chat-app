@@ -77,10 +77,10 @@ function LoginPage(props) {
                             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} id="password" placeholder="Enter your password" />
                         </div>
                         <button type="submit" onClick={handleForm} className="login-button">Log In</button>
-                        <dov className="links">
+                        <div className="links">
                             <small>Don{"'"}t Have an Account</small>
                             <Link id={"backLink"} to={"/signup"}>SignUp Here</Link>
-                        </dov>
+                        </div>
                     </form>
                 </div>
             </div>

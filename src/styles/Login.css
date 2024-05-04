@@ -2,8 +2,14 @@
 *{
     transition: .3s all ease-in-out;
 }
+.main{
+    overflow-y: auto;
+    overflow-x: hidden;
+
+}
 /* Styles for the login form */
 .login-form {
+    overflow: auto;
     width: 350px; /* Fixed width for consistency */
     padding: 20px; /* Padding for inner spacing */
     background-color: #ffffff; /* White background for the form */
