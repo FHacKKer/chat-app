@@ -1,12 +1,11 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import Navbar from "./Navbar.jsx";
-import {ProgressBar} from  "react-loader-spinner"
 import {useNavigate} from "react-router-dom";
-import ChatContext from "../Context/ChatContext.js";
+import {SocketContext} from "../Context/SocketContext.jsx";
 
 function Logout() {
     const navigate = useNavigate();
-    const {isLoggedIn,setIsLoggedIn} = useContext(ChatContext)
+    const {isLoggedIn,setIsLoggedIn,setUser} = useContext(SocketContext)
 
 
     const addedCrDiv = useRef(false); // Use useRef to track if div was added
@@ -19,7 +18,6 @@ function Logout() {
         let checkDiv = document.querySelectorAll(".creditDiv");
 
         if(checkDiv.length > 0){
-            console.log(`Credit Div Already Exists`);
             return;
         }
 
@@ -56,6 +54,8 @@ function Logout() {
             return () => clearTimeout(timer);
         }else{
             setIsLoggedIn(false);
+            localStorage.removeItem("token");
+            setUser(null);
             navigate("/");
         }
     }, [countdown, navigate]);
@@ -64,15 +64,6 @@ function Logout() {
         <>
             <Navbar />
             <div className={"main"}>
-                <ProgressBar
-                    visible={true}
-                    height="80"
-                    width="200"
-                    barColor={"#bd0f0f"}
-                    ariaLabel="progress-bar-loading"
-                    wrapperStyle={{}}
-                    wrapperClass=""
-                />
                 <p>You{"'"}re being logged out in {countdown} {countdown > 1 ? "Seconds" : "Second"}</p>
             </div>
         </>

@@ -3,25 +3,31 @@ import '../styles/Login.css'; // Import the CSS styles for the login page
 import Navbar from "./Navbar.jsx";
 import ChatContext from "../Context/ChatContext.js";
 import {Link, useNavigate} from "react-router-dom";
+import {ToastContainer} from "react-toastify";
+import {SocketContext} from "../Context/SocketContext.jsx";
+import ButtonLoading from "./ButtonLoading.jsx";
 
 function LoginPage(props) {
-    const {isLoggedIn, setIsLoggedIn } = useContext(ChatContext);
+    const {showToast } = useContext(ChatContext);
     const navigate = useNavigate();
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("");
 
-    if(isLoggedIn){
-        navigate("/chat");
-        return
-    }
+    const {btnLoading,setBtnLoading,socket,isLoggedIn,error,setError,announcements,setAnnouncements} = useContext(SocketContext);
+
+    useEffect(() => {
+        if(isLoggedIn){
+            navigate("/chat");
+        }
+    }, [isLoggedIn, navigate]);
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const addedCrDiv = useRef(false); // Use useRef to track if div was added
+    const addedCrDiv = useRef(false);
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
         if (addedCrDiv.current) {
-            return; // Return early if div has been added
+            return;
         }
 
         let checkDiv = document.querySelectorAll(".creditDiv");
@@ -46,21 +52,58 @@ function LoginPage(props) {
 
         body[0].appendChild(creditDiv); // Add the div to the body
         addedCrDiv.current = true; // Mark that div has been added
-    }, []); // Empty dependency array to ensure useEffect runs once
+    }, []);
 
+    const handleUsernameChange = (e) => {
+        const { value } = e.target;
+        // Regular expression to allow only letters and underscores
+        const validCharacters = /^[a-zA-Z_]*$/;
+
+        if (validCharacters.test(value)) {
+            // If the input is valid, update the username state
+            setUsername(value);
+        }
+    };
 
     const handleForm = () => {
-        let uname =  username.trim();
-        let pass = password.trim();
-        if(uname === "" || pass === ""){
-            alert("Please enter a valid username & Password");
-
-        }else{
-            console.log("Successfully logged in!");
-            setIsLoggedIn(true)
-            navigate("/chat");
+        try{
+            setBtnLoading(true);
+            let uname =  username.trim();
+            let pass = password.trim();
+            if(uname === "" || pass === ""){
+                showToast("info","Please Enter Valid Username & Password")
+            }else{
+                if(uname.length < 5){
+                    setError("Username Must be 6 characters long");
+                    return
+                }
+                if(pass.length < 5){
+                    setError("Password Must be 6 Characters long");
+                    return;
+                }
+                if(socket){
+                    socket.emit("signin",{username:uname,password:pass})
+                }
+            }
+        }catch (e){
+            setError("Error Occurred During Signin. Please Try Again.")
+        }finally {
+           setTimeout(() => {
+               setBtnLoading(false)
+           },1000)
         }
     }
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+        showToast("success",announcements);
+        setAnnouncements(null);
+    }, [announcements]);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+        showToast("error",error);
+        setError(null);
+    },[error])
     return (
         <>
             <Navbar />
@@ -70,13 +113,13 @@ function LoginPage(props) {
                     <form onSubmit={(e) => e.preventDefault()}>
                         <div className="form-group">
                             <label htmlFor="username">Username</label>
-                            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} id="username" placeholder="Enter your username" />
+                            <input type="text" value={username} onChange={handleUsernameChange} id="username" placeholder="Enter your username" />
                         </div>
                         <div className="form-group">
                             <label htmlFor="password">Password</label>
                             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} id="password" placeholder="Enter your password" />
                         </div>
-                        <button type="submit" onClick={handleForm} className="login-button">Log In</button>
+                        <button type="submit" disabled={btnLoading} onClick={handleForm} className="login-button">{!btnLoading ? "Sign In" : (<ButtonLoading />)}</button>
                         <div className="links">
                             <small>Don{"'"}t Have an Account</small>
                             <Link id={"backLink"} to={"/signup"}>SignUp Here</Link>
@@ -84,6 +127,20 @@ function LoginPage(props) {
                     </form>
                 </div>
             </div>
+
+            <ToastContainer
+                position="bottom-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                limit={1}
+            />
         </>
     );
 }

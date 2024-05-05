@@ -1,14 +1,18 @@
+// eslint-disable-next-line no-unused-vars
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import Navbar from "./Navbar.jsx";
 import {Link} from "react-router-dom";
 import ChatContext from "../Context/ChatContext.js";
 import {ToastContainer} from "react-toastify";
 import ButtonLoading from "./ButtonLoading.jsx";
+import {SocketContext} from "../Context/SocketContext.jsx";
+import error from "./Error.jsx";
 import('../styles/Login.css')
-function SignupPage(props) {
+function SignupPage() {
     const {showToast} = useContext(ChatContext);
 
-    const [loading, setLoading] = useState(false)
+    const {socket,btnLoading,setBtnLoading,signUpError,setSignUpError,announcements,setAnnouncements,error,setError} = useContext(SocketContext);
+
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
@@ -36,42 +40,42 @@ function SignupPage(props) {
 
     const handleSignUp = async () => {
         try {
-            setLoading(true);
+            setBtnLoading(true);
 
             let trimmedName = name.trim();
             let trimmedUsername = username.trim();
-            let trimmedEmail = email.trim();
+            let trimmedEmail = email.trim().toLowerCase();
             let trimmedPassword = password.trim();
             let trimmedCPassword = cPassword.trim();
 
             if (trimmedName === "" || trimmedUsername === "" || trimmedEmail === "" || trimmedPassword === "" || trimmedCPassword === "") {
                 showToast("info", "Please fill all input fields!");
-                setLoading(false);
+                setBtnLoading(false);
                 return;
             }
 
             const isEmailValid = validateEmail(trimmedEmail);
             if (!isEmailValid) {
                 showToast("error", "Please enter a valid email address.");
-                setLoading(false);
+                setBtnLoading(false);
                 return;
             }
 
             if (trimmedPassword !== trimmedCPassword) {
                 showToast("info", "Passwords do not match!");
-                setLoading(false);
+                setBtnLoading(false);
                 return;
             }
 
             if (trimmedUsername.length < 6) {
                 showToast("warning", "Username must be at least 6 characters long.");
-                setLoading(false);
+                setBtnLoading(false);
                 return;
             }
 
             if (trimmedPassword.length < 6) {
                 showToast("warning", "Password must be at least 6 characters long.");
-                setLoading(false);
+                setBtnLoading(false);
                 return;
             }
 
@@ -81,7 +85,7 @@ function SignupPage(props) {
 
             if (res.disposable === "true") {
                 showToast("error", "Disposable emails are not allowed!");
-                setLoading(false);
+                setBtnLoading(false);
                 return;
             }
 
@@ -92,14 +96,40 @@ function SignupPage(props) {
                 password: trimmedPassword,
             };
 
-            console.log(data);
+            if(socket){
+                socket.emit("userSignUp",data);
+            }
 
         } catch (e) {
             console.log(`An error occurred: ${e}`);
-        } finally {
-            setLoading(false);
         }
     };
+
+
+    useEffect(() => {
+            showToast("error",signUpError);
+            setSignUpError(null)
+            setBtnLoading(false)
+    },[signUpError]);
+
+    useEffect(() => {
+        showToast("error",error)
+        setError(null);
+    }, [error]);
+
+    useEffect(() => {
+        showToast("info",announcements);
+        setAnnouncements(null);
+        emptyAllFields();
+    }, [announcements]);
+
+    const emptyAllFields = () => {
+        setUsername("");
+        setName("");
+        setEmail("");
+        setPassword("");
+        setCPassword("");
+    }
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const addedCrDiv = useRef(false); // Use useRef to track if div was added
@@ -163,7 +193,7 @@ function SignupPage(props) {
                             <label htmlFor="cpassword">Confirm Password</label>
                             <input type="password" value={cPassword} onChange={(e)=> setCPassword(e.target.value)} id="cpassword" placeholder="Confirm your password"/>
                         </div>
-                        <button onClick={handleSignUp} type="submit" className="login-button">{loading ? (<ButtonLoading />) : "Sign Up"}</button>
+                        <button onClick={handleSignUp} type="submit" className="login-button">{btnLoading ? (<ButtonLoading />) : "Sign Up"}</button>
                         <div className="links">
                             <small>Already Have an Account</small>
                             <Link id={"backLink"} to={"/login"}>SignIn Here</Link>
@@ -182,7 +212,7 @@ function SignupPage(props) {
                 draggable
                 pauseOnHover
                 theme="light"
-                limit={3}
+                limit={1}
             />
         </>
     );

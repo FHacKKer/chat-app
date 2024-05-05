@@ -2,11 +2,13 @@
 import {useContext} from "react";
 import {Link, useLocation} from "react-router-dom";
 import ChatContext from "../Context/ChatContext.js";
+import {SocketContext} from "../Context/SocketContext.jsx";
 import("../styles/Navbar.css");
 function Navbar() {
     const {pathname} = useLocation();
 
-    const {openNavBar,setOpenNavBar,isLoggedIn} = useContext(ChatContext);
+    const {openNavBar,setOpenNavBar} = useContext(ChatContext);
+    const {isLoggedIn} = useContext(SocketContext);
 
     return (
         <>

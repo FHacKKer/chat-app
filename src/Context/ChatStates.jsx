@@ -22,13 +22,10 @@ const ChatStates = (props) => {
 
     // State initialization
     const [openNavBar, setOpenNavBar] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const contextValue = {
         openNavBar,
         setOpenNavBar,
-        isLoggedIn,
-        setIsLoggedIn,
         showToast
     }
 

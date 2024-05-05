@@ -14,8 +14,9 @@ import {SocketContext} from "../Context/SocketContext.jsx";
 const ChatPage = () => {
     const [message, setMessage] = useState("")
 
-    const {isLoggedIn,showToast} = useContext(ChatContext);
-    const {socket,loading,messages,error,addMyMessage} = useContext(SocketContext);
+    const {showToast} = useContext(ChatContext);
+
+    const {socket,loading,messages,error,addMyMessage,isLoggedIn,user} = useContext(SocketContext);
 
     const inputField = useRef(null);
     useEffect(() => {
@@ -77,15 +78,20 @@ const ChatPage = () => {
             showToast("info","Please Write Message First!")
             return;
         }
-        let mymsg = {
-            name:"Faisal Shahzad",
+        let myMsg = {
+            sender:user.name,
+            si:user.id,
             message:msg,
             timestamp:Date.now()
         }
+        if(!user || !user.name){
+            showToast("error","SomeThing Went Wrong. Try Again Later.");
+            return;
+        }
         if(socket){
             socket.emit("newMessage",msg);
-
-            addMyMessage(mymsg)
+            addMyMessage(myMsg)
+            setMessage("")
         }else{
             console.error(`Failed To Connect With Backend. Please Try Again Latter.!`)
         }
@@ -94,28 +100,52 @@ const ChatPage = () => {
 
     return (
         <>
-        <Navbar />
-        <div className="chatPage">
-            <div className="messagesArea">
-                {error ? (
-                    <div className="errorArea">
-                        <Error error={error} />
-                    </div>
-                ) : loading ? (
-                    <Loading />
+            <Navbar />
+            <div className="chatPage">
+                <div className="messagesArea">
+                    {error ? (
+                        <div className="errorArea">
+                            <Error error={error} />
+                        </div>
+                    ) : loading ? (
+                        <Loading />
                     ) : messages.length > 0 ? (
-                    messages.map((message,i) => (
-                    <Message key={i} name={message.sender} message={message.message} side={i%2 === 0 ? "incoming" : "outgoing"} time={message.timestamp} />
-            ))
-            ) : (
-            <NoMessages />
-            )}
-        </div>
-        <div className="sendArea">
-            <input ref={inputField}  type="text" placeholder="" value={message} onChange={(e)=>setMessage((e.target.value))} />
-            <button onClick={handleMessageSend}>Send</button>
-        </div>
-        </div>
+                        messages.map((message, i) => {
+                            // Determine the side of the message
+                            let side = "incoming"; // Default to "incoming"
+
+                            if (user?.id) {
+                                // If user.id is defined, check if the message is from the current user
+                                if (message?.si && message.si === user.id) {
+                                    side = "outgoing"; // If it's from the current user, set to "outgoing"
+                                }
+                            }
+
+                            return (
+                                <Message
+                                    key={i}
+                                    name={message.sender}
+                                    message={message.message}
+                                    side={side}
+                                    time={message.timestamp}
+                                />
+                            );
+                        })
+                    ) : (
+                        <NoMessages />
+                    )}
+                </div>
+                <div className="sendArea">
+                    <input
+                        ref={inputField}
+                        type="text"
+                        placeholder="Enter your message..."
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                    />
+                    <button onClick={handleMessageSend}>Send</button>
+                </div>
+            </div>
 
             <ToastContainer
                 position="bottom-right"
@@ -130,9 +160,9 @@ const ChatPage = () => {
                 theme="light"
                 limit={3}
             />
-
         </>
-);
+
+    );
 };
 
 export default ChatPage;

@@ -8,16 +8,25 @@ const SocketContext = createContext(null);
 const SocketProvider = ({ children }) => {
     // eslint-disable-next-line no-undef
 
+
     const [socketUrl, setSocketUrl] = useState(process.env.NODE_ENV === "development" ? "http://localhost:3001" : "https://react-chat-app-backend-ay4k.onrender.com");
 
     // eslint-disable-next-line no-undef
-    console.log(process.env.NODE_ENV);
     const [socket, setSocket] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [messages, setMessages] = useState([])
+    const [messages, setMessages] = useState([]);
     const [error, setError] = useState(null);
+    const [btnLoading, setBtnLoading] = useState(false);
+    const [signUpError, setSignUpError] = useState(null);
+    const [announcements, setAnnouncements] = useState(null);
+    const [user, setUser] = useState(null);
+
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
+
+
         // Connect to your Socket.IO server (update with your server's URL)
         const socketInstance = io(socketUrl);
 
@@ -29,7 +38,12 @@ const SocketProvider = ({ children }) => {
                 setError(`Failed To Connect With Server. Please Try Again Latter!!`);
                 setLoading(false)
         })
-
+        socketInstance.on("globalError",(data) => {
+            setError(data.message);
+            if(btnLoading){
+                setBtnLoading(false);
+            }
+        })
         socketInstance.on('disconnect', () => {
             console.log('Socket.IO connection disconnected');
         });
@@ -49,6 +63,48 @@ const SocketProvider = ({ children }) => {
             }
         });
 
+        socketInstance.on("newUserSignedUp",(data) => {
+            localStorage.setItem("token", data.token);
+            setUser({
+                name:data.name.trim(),
+                id:data.id
+            });
+            setAnnouncements("User Signed Up Successfully.");
+            setBtnLoading(false)
+        });
+
+        socketInstance.on("errorEvent", (err) => {
+            console.log(`An Error Received : ${err.message}`)
+            setSignUpError(err.message);
+        })
+
+        // events for verifying jwt tokens
+        socketInstance.on("tokenSignUpSuccess",(data) => {
+            setIsLoggedIn(true);
+            setUser(data.user);
+        })
+
+        socketInstance.on("jwtError",() => {
+            setError("Failed To Verify SignIn Token. Please Login.!")
+            localStorage.removeItem("token");
+        })
+
+        // end of verifying jwt tokens events
+
+
+        // user signin Event
+        socketInstance.on("signInSuccess",(data) => {
+            setAnnouncements("User Signed Up Successfully.");
+            setUser({name:data.user.name, id:data.user.id});
+            if(localStorage.token){
+                localStorage.removeItem("token");
+            }else{
+                localStorage.setItem("token",data.token);
+                setIsLoggedIn(true);
+
+            }
+        })
+
         setSocket(socketInstance);
 
         // Cleanup when the component is unmounted
@@ -61,12 +117,33 @@ const SocketProvider = ({ children }) => {
         setMessages((prev) => [...prev, messageObj]);
     }
 
+    useEffect(() => {
+        if(localStorage.token){
+            let token = localStorage.getItem("token").trim();
+            if(socket && !user){
+                socket.emit("tokenSignUp",token);
+            }
+        }
+    }, [socket,localStorage]);
+
+
     let values = {
         socket,
         loading,
         addMyMessage,
         messages,
-        error
+        error,
+        setError,
+        btnLoading,
+        setBtnLoading,
+        signUpError,
+        setSignUpError,
+        announcements,
+        setAnnouncements,
+        isLoggedIn,
+        setIsLoggedIn,
+        user,
+        setUser
     }
 
     return (

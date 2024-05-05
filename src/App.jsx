@@ -20,7 +20,6 @@ function App() {
         let checkDiv = document.querySelectorAll(".creditDiv");
 
         if(checkDiv.length > 0){
-            console.log(`Credit Div Already Exists`);
             return;
         }
 
