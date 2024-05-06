@@ -21,7 +21,6 @@ const SocketProvider = ({ children }) => {
     const [announcements, setAnnouncements] = useState(null);
     const [user, setUser] = useState(null);
 
-
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
@@ -36,13 +35,11 @@ const SocketProvider = ({ children }) => {
 
         socketInstance.on("connect_error",() => {
                 setError(`Failed To Connect With Server. Please Try Again Latter!!`);
-                setLoading(false)
+                setLoading(false);
         })
         socketInstance.on("globalError",(data) => {
             setError(data.message);
-            if(btnLoading){
-                setBtnLoading(false);
-            }
+            setBtnLoading(false)
         })
         socketInstance.on('disconnect', () => {
             console.log('Socket.IO connection disconnected');
@@ -101,7 +98,7 @@ const SocketProvider = ({ children }) => {
             }else{
                 localStorage.setItem("token",data.token);
                 setIsLoggedIn(true);
-
+                setBtnLoading(false);
             }
         })
 

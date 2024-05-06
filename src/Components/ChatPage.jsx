@@ -1,4 +1,4 @@
-// eslint-disable-next-line no-unused-vars
+
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import Navbar from './Navbar.jsx';
 import '../styles/chat.css';
@@ -20,7 +20,7 @@ const ChatPage = () => {
 
     const inputField = useRef(null);
     useEffect(() => {
-        if (inputField.current) { // Ensure the ref is not null
+        if (inputField.current) {
             inputField.current.placeholder = isLoggedIn ? "Write a Message..." : "Please Login To Send Messages!";
             inputField.current.disabled = !isLoggedIn;
             if(!isLoggedIn){
@@ -29,11 +29,11 @@ const ChatPage = () => {
         }
     }, [message, inputField,isLoggedIn]);
 
-    const addedCrDiv = useRef(false); // Use useRef to track if div was added
+    const addedCrDiv = useRef(false);
 
     useEffect(() => {
         if (addedCrDiv.current) {
-            return; // Return early if div has been added
+            return;
         }
 
         let checkDiv = document.querySelectorAll(".creditDiv");
@@ -43,21 +43,21 @@ const ChatPage = () => {
         }
 
         const handleCreditRedirect = () => {
-            window.location.href = "https://github.com/fhackker"; // Redirect to another domain
+            window.location.href = "https://github.com/fhackker";
         };
 
         const body = document.getElementsByTagName('body');
         const creditDiv = document.createElement("div");
-        creditDiv.addEventListener("click", handleCreditRedirect); // Correctly add event listener
+        creditDiv.addEventListener("click", handleCreditRedirect);
         creditDiv.classList.add("creditDiv");
         creditDiv.style.cursor = "pointer"
 
         const icon = document.createElement('i');
-        icon.classList.add("bx", "bxl-github"); // Use spread syntax to add multiple classes
+        icon.classList.add("bx", "bxl-github");
         creditDiv.appendChild(icon);
 
-        body[0].appendChild(creditDiv); // Add the div to the body
-        addedCrDiv.current = true; // Mark that div has been added
+        body[0].appendChild(creditDiv);
+        addedCrDiv.current = true;
     }, []);
 
     useEffect(() => {
@@ -80,7 +80,7 @@ const ChatPage = () => {
         }
         let myMsg = {
             sender:user.name,
-            si:user.id,
+            si:user?.id,
             message:msg,
             timestamp:Date.now()
         }
@@ -89,7 +89,7 @@ const ChatPage = () => {
             return;
         }
         if(socket){
-            socket.emit("newMessage",msg);
+            socket.emit("newMessage",myMsg);
             addMyMessage(myMsg)
             setMessage("")
         }else{
@@ -111,20 +111,20 @@ const ChatPage = () => {
                         <Loading />
                     ) : messages.length > 0 ? (
                         messages.map((message, i) => {
-                            // Determine the side of the message
-                            let side = "incoming"; // Default to "incoming"
+
+                            let side = "incoming";
 
                             if (user?.id) {
-                                // If user.id is defined, check if the message is from the current user
+
                                 if (message?.si && message.si === user.id) {
-                                    side = "outgoing"; // If it's from the current user, set to "outgoing"
+                                    side = "outgoing";
                                 }
                             }
 
                             return (
                                 <Message
                                     key={i}
-                                    name={message.sender}
+                                    name={user?.id && message?.si === user.id ? "Me" : message.sender}
                                     message={message.message}
                                     side={side}
                                     time={message.timestamp}
@@ -134,6 +134,7 @@ const ChatPage = () => {
                     ) : (
                         <NoMessages />
                     )}
+
                 </div>
                 <div className="sendArea">
                     <input

@@ -8,7 +8,7 @@ function Logout() {
     const {isLoggedIn,setIsLoggedIn,setUser} = useContext(SocketContext)
 
 
-    const addedCrDiv = useRef(false); // Use useRef to track if div was added
+    const addedCrDiv = useRef(false);
 
     useEffect(() => {
         if (addedCrDiv.current) {
@@ -37,7 +37,7 @@ function Logout() {
 
         body[0].appendChild(creditDiv); // Add the div to the body
         addedCrDiv.current = true; // Mark that div has been added
-    }, []); // Empty dependency array to ensure useEffect runs once
+    }, []);
 
 
     const [countdown, setCountdown] = useState(5);

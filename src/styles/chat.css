@@ -1,99 +1,113 @@
-/* General styling for the chat page with a dark theme */
+
 
 .chatPage {
     height: calc(100svh - 66px) !important;
     width: 100%;
-    border-top: 2px solid #ffffff; /* Dark border */
+    border-top: 2px solid #ffffff;
     display: flex;
     flex-direction: column;
-    background-color: #1c1c1c; /* Dark background for the entire page */
+    background-color: #1c1c1c;
     overflow: hidden;
 }
 
 
-/* Styling for the messages area */
 .messagesArea {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
-    background-color: #252525; /* Dark background for the messages area */
-    color: #ffffff; /* White text for contrast */
+    background-color: #252525;
+    color: #ffffff;
 }
 
-/* Styling for individual messages */
+.announcement{
+    clear: both;
+    width: 100%;
+    /*background: #000;*/
+    padding: 10px;
+    text-align: center;
+}
+
+.announcement.join hr{
+    height: 5px;
+    background: #60e6cd;
+    border-radius: 10px;
+}
+.announcement.leave hr{
+    background: linear-gradient(to right,rebeccapurple,darkred);
+    height: 5px;
+    border-radius: 10px;
+}
+.announcement .msg{
+    font-size: 1.7rem;
+
+}
+
 .message {
     max-width: 50%;
     padding: 15px;
     margin: 10px 0;
     width: 100%;
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Darker shadow */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     word-break: break-word;
-    border: 2px solid #555555; /* Darker border */
+    border: 2px solid #555555;
     clear: both;
 }
 .message.incoming{
-    background-color: #333333; /* Darker color for odd messages */
+    background-color: #333333;
 
 }
 .message.outgoing{
     float: right;
     clear: both;
-    background-color: #454545; /* Dark background for messages */
+    background-color: #454545;
 }
-/* Styling for sender name */
 .message span {
-    font-weight: bold;
-    color: #f0f0f0; /* Light color for sender's name */
-    font-size: 1.6rem;
+    font-weight: 500;
+    color: #f0f0f0;
+    font-size: 1.3rem;
 }
 
-/* Styling for the message text */
 .message p {
     font-size: 1.6rem;
     margin-top: 10px;
     margin-bottom: 10px;
-    color: #cccccc; /* Light grey for text */
+    color: #cccccc;
 }
 
-/* Styling for the timestamp */
 .message small {
-    color: #999999; /* Grey for timestamp */
+    color: #999999;
     font-size: 1.2em;
 }
 
-/* Styling for the send area */
 .sendArea {
     display: flex;
     padding: 10px 20px;
-    background-color: #333333; /* Dark background for the send area */
-    border-top: 1px solid #444444; /* Darker border */
+    background-color: #333333;
+    border-top: 1px solid #444444;
 }
 
-/* Styling for the text input */
 .sendArea input {
     flex: 1;
     padding: 10px;
-    border: 1px solid #555555; /* Dark border */
+    border: 1px solid #555555;
     font-size: 1.6rem;
     letter-spacing: 2px;
     border-top-left-radius: 10px !important;
-    background-color: #404040; /* Dark background for the input */
-    color: #ffffff; /* White text for input */
+    background-color: #404040;
+    color: #ffffff;
 }
 
-/* Styling for the send button */
 .sendArea button {
     padding: 10px 15px;
-    background-color: #007BFF; /* Blue button color for visibility */
+    background-color: #007BFF;
     border: none;
     border-top-right-radius: 10px;
-    color: #ffffff; /* White text */
+    color: #ffffff;
     font-weight: bold;
     cursor: pointer;
 }
 
-/* Change the message box to full width on smaller screens */
 @media (max-width: 768px) {
     .message,.message.outgoing {
         max-width: 100%;
@@ -105,21 +119,21 @@
     color: rgba(255, 255, 255, 0.68);
 }
 .sendArea input:focus {
-    border-color: #007BFF; /* Highlight the border on focus */
+    border-color: #007BFF;
     outline: none;
 }
 
 .sendArea button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3;
 }
 
 .messagesArea::-webkit-scrollbar {
     width: 6px;
-    background-color: #333333; /* Darker scrollbar */
+    background-color: #333333;
 }
 
 .messagesArea::-webkit-scrollbar-thumb {
-    background-color: #555555; /* Grey thumb for scrollbar */
+    background-color: #555555;
     border-radius: 3px;
 }
 

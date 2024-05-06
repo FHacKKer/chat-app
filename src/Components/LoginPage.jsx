@@ -87,10 +87,6 @@ function LoginPage(props) {
             }
         }catch (e){
             setError("Error Occurred During Signin. Please Try Again.")
-        }finally {
-           setTimeout(() => {
-               setBtnLoading(false)
-           },1000)
         }
     }
 
